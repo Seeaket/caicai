@@ -37,6 +37,10 @@ void view(struct hhh* person);
 void timeshell();
 int samesearch(char* str1,char* str2);
 
+void alladd(struct hhh* person);
+typedef void (*functionpointer)(struct hhh* person);
+void exits(struct hhh* person);
+
 
 void menu();
 

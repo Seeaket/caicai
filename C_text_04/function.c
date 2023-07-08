@@ -5,6 +5,8 @@
 #include<time.h>
 #include<ctype.h>
 
+#define EPS 1e-6
+
 struct hhh* phead = NULL;
 count = 0;
 //bbb
@@ -277,13 +279,12 @@ void Print(struct hhh* person)
 		print = print->text;
 	}
 	puts("");
-	if(count == 0)
-		printf("\t当前数据为0！\n");
 }
 
 //删除
 int Remove(struct hhh* person)
 {
+	printf("    1、姓名删除   2、工号删除   3、工资段删除   请选择:");
 	struct hhh* pp = person;
 	int num;
 	char p;
@@ -295,7 +296,6 @@ int Remove(struct hhh* person)
 		if (cur->text == NULL)
 		{
 			printf("\t未发现有该角色！\n");
-			system("pause");
 			return 0;
 		}
 		struct hhh* ar = (struct hhh*)sizeof(struct hhh);
@@ -335,7 +335,7 @@ int Remove(struct hhh* person)
 		person = pp;
 		save(person);
 		printf("\t已筛查完毕，保存文件成功！\n");
-		system("pause");
+		return 0;
 	}
 	else if (num == 2)
 	{
@@ -376,7 +376,7 @@ int Remove(struct hhh* person)
 		}
 		person = pp;
 		save(person);
-		system("pause");
+		return 0;
 	}
 	else if(num == 3)
 	{
@@ -438,17 +438,14 @@ int Remove(struct hhh* person)
 			person = pp;
 			Delay(8 * 100);
 			printf("\t删除成功！\n");
-			system("pause");
 			save(person);
 			return 0;
 		}
 		printf("\t已取消删除！\n");
-		system("pause");
 	}
 	else
 	{
 		printf("\t\t  无效输入!\n");
-		system("pause");
 	}
 	return 0;
 }
@@ -456,19 +453,33 @@ int Remove(struct hhh* person)
 //清空
 void Empty(struct hhh* person)
 {
-	struct hhh* cur= person->text;
-	struct hhh* n = NULL;
-	while (cur != NULL)
+	printf("\t确认清空所有数据吗？  y(Y)/n(N)\t请选择：");
+	char Y;
+	scanf_s(" %c", &Y,(unsigned int)sizeof(Y));
+	if (Y == 'Y' || Y == 'y')
 	{
-		n = cur->text;
-		free(cur);
-		cur = n;
+		struct hhh* cur= person->text;
+		struct hhh* n = NULL;
+		while (cur != NULL)
+		{
+			n = cur->text;
+			free(cur);
+			cur = n;
+		}
+		person->text = NULL;
+		count = 0;
+		printf("数据已清空！\n");
+		save(person);
+		
 	}
-	person->text = NULL;
-	count = 0;
-	printf("数据已清空！\n");
-	save(person);
-	system("pause");
+	else if(Y == 'n' || Y == 'N')
+	{
+		printf("已取消清空数据！\n");
+	}
+	else
+	{
+		printf("错误输入已取消清空\n");
+	}
 }
 
 //修改
@@ -513,14 +524,12 @@ void modify(struct hhh* person)
 				save(person);
 				printf("\t修改成功!\n");
 				free(cur);
-				system("pause");
 				return;
 			}
 		}
 	}
 	person = pp;
 	printf("\t已取消修改!\n");
-	system("pause");
 }
 
 //查看
@@ -548,6 +557,7 @@ void timeshell()
 	//}
 }
 
+
 //排序查找
 void sort(struct hhh* person)
 {
@@ -559,7 +569,7 @@ void sort(struct hhh* person)
 	struct hhh* pp = person;
 	if(cur != NULL)
 		cur->text = NULL;
-	if (num == 1)
+	if (num > 0 && num < 4)
 	{
 		struct hhh* te = pp;
 		struct hhh* tr = person;
@@ -567,12 +577,13 @@ void sort(struct hhh* person)
 		{
 			te = te->text;
 			tr = te;
-			while (tr != NULL)
+			while (tr != NULL && te != NULL)
 			{
 				/*strcmp的判断小于返回负数(不一定就是 - 1)，等于返回0，
 					大于返回正数(不一定就是1)，所以不能直接判断等于1还是等于-1*/
 				tr = tr->text;
-				if (tr != NULL && strcmp(te->data.name, tr->data.name) > 0)
+				if (tr != NULL && (num == 1 ? (strcmp(te->data.name, tr->data.name) > 0) : 
+				(num == 2 ? te->data.numb > tr->data.numb : (num == 3 ? te->data.wages > tr->data.wages :putchar(0)))))
 				{
 					cur->data = te->data;
 					te->data = tr->data;
@@ -583,50 +594,6 @@ void sort(struct hhh* person)
 		person = s;
 		Print(person);
 		save(person);
-		return;
-	}
-	if (num == 2)
-	{
-		while (pp->text != NULL)
-		{
-			pp = pp->text;
-			person = pp;
-			while (person != NULL && person->text != NULL)
-			{
-				person = person->text;
-				if (person != NULL && (pp->data.numb > person->data.numb))
-				{
-					cur->data = pp->data;
-					pp->data = person->data;
-					person->data = cur->data;
-				}
-			}
-		}
-		person = s;
-		save(person);
-		Print(person);
-		return;
-	}
-	if (num == 3)
-	{
-		while (pp->text != NULL)
-		{
-			pp = pp->text;
-			person = pp;
-			while (person->text != NULL)
-			{
-				person = person->text;
-				if (person != NULL && (pp->data.wages > person->data.wages))
-				{
-					cur->data = pp->data;
-					pp->data = person->data;
-					person->data = cur->data;
-				}
-			}
-		}
-		person = s;
-		save(person);
-		Print(person);
 		return;
 	}
 	if (num == 4)
@@ -640,6 +607,10 @@ void sort(struct hhh* person)
 		cur = search(person, n);
 		if (cur->text != NULL)
 			Print(cur);
+		else
+		{
+			printf("未发现相关人物！\n");
+		}
 		return;
 	}
 	else
@@ -692,7 +663,20 @@ void menu()
 	printf("\t\t请选择以上功能：");
 }
 
+void alladd(struct hhh* person)
+{
+	int num;
+	printf("    1、头部添加\t2、尾部添加\t\t请选择:");
+	scanf_s("%d", &num);
+	num == 1 ? Headadd(person) : (num == 2 ? Tailadd(person) : printf("错误输入！"));
+}
 
+void exits(struct hhh* person)
+{
+	printf("欢迎下次使用！\n");
+	free(person);
+	exit(0);
+}
 
 
 

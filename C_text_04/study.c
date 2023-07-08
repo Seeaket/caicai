@@ -36,7 +36,6 @@ void counter(struct data* p)
 }
 
 
-//this is a test aaa
 int main()
 {
 	//位结构体的年月日输入，内存位的分配
@@ -44,6 +43,7 @@ int main()
 	Input(&p);
 	counter(&p);*/
 	//不管头插尾插都要重新定义分配空间
+	functionpointer funcs[] = { exits,alladd,Remove,modify,view,sort,Empty };
 	struct hhh* _t = load("人头库.txt");
 	if (_t == NULL)
 	{
@@ -57,57 +57,20 @@ int main()
 	}
 	while (1)
 	{
+		system("cls");
 		timeshell();
 		menu();
 		int num;
 		scanf_s("%d", &num);
-		switch (num)
+		if (num >= 0 && num <= 6)
+			funcs[num](_t);
+		else
 		{
-		case 1:
-			printf("    1、头部添加\t2、尾部添加\t\t请选择:");
-			scanf_s("%d", &num);
-			num == 1 ? Headadd(_t) : (num == 2 ? Tailadd(_t) : printf("错误输入！"));
-			system("pause");
-			break;
-		case 2:
-			printf("    1、姓名删除   2、工号删除   3、工资段删除   请选择:");
-			Remove(_t);
-			break;
-		case 3:
-			modify(_t);
-			break;
-		case 4:
-			view(_t);
-			system("pause");
-			break;
-		case 5:
-			sort(_t);
-			system("pause");
-			break;
-		case 6:
-			Empty(_t);
-			break;
-		case 0:
-			printf("欢迎下次使用！\n");
-			free(_t);
-			system("pause");
-			return 0;
-		default:
 			printf("\t\t  错误输入\n");
-			system("pause");
-			break;
 		}
+		system("pause");
 		int c;
 		while ((c = getchar()) != '\n' && c != EOF) {}//清楚缓冲区
-		system("cls");
 	}
-
-
-
-
-
-
-
-
 	return 0;
 }
