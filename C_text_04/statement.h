@@ -34,6 +34,9 @@ struct hhh* search(struct hhh* person, int num);
 void modify(struct hhh* person);
 void sort(struct hhh* person);
 void view(struct hhh* person);
+void timeshell();
+int samesearch(char* str1,char* str2);
+
 
 void menu();
 

@@ -3,6 +3,7 @@
 #include"statement.h"
 #include<string.h>
 #include<time.h>
+#include<ctype.h>
 
 struct hhh* phead = NULL;
 count = 0;
@@ -101,7 +102,7 @@ struct hhh* search(struct hhh* person, int num)
 		while (person != NULL)
 		{
 			person = person->text;
-			while (person != NULL && strcmp(person->data.name, name) == 0)
+			while (person != NULL && samesearch(person->data.name, name) == 0)
 			{
 				p = person->text;
 				cur->text = (struct hhh*)malloc(sizeof(struct hhh));
@@ -529,6 +530,24 @@ void view(struct hhh* person)
 	printf("当前数据为%d/%d\n", count, Max);
 }
 
+//时间显示
+void timeshell()
+{
+	//while (1)
+	//{
+		putchar(10);
+		time_t m;
+		m = time(NULL);
+		struct tm cm;
+		int n = localtime_s(&cm, &m);
+		char* week[] = { "星期一","星期二","星期三","星期四","星期五","星期六","星期日" };
+		printf("\t      当地时间：%d年%d月%d日 %d:%d:%d %s\n", cm.tm_year+1900, cm.tm_mon+1, cm.tm_mday,
+			cm.tm_hour, cm.tm_min, cm.tm_sec, week[cm.tm_wday]);
+	//	Delay(1000);//延迟一秒打印
+	//	system("cls");
+	//}
+}
+
 //排序查找
 void sort(struct hhh* person)
 {
@@ -628,6 +647,32 @@ void sort(struct hhh* person)
 		printf("错误输入！\n");
 		return;
 	}
+}
+
+//姓名忽略大小写字母查找
+int samesearch(char* str1, char* str2)
+{
+	char* arr1 = _strdup(str1);
+	char* arr2 = _strdup(str2);
+	for (int i = 0; arr1[i]; i++)
+	{
+		if (arr1[i] >= 'A' && arr1[i] <= 'Z')
+		{
+			arr1[i] = tolower((unsigned char)arr1[i]);
+		}
+	}
+	for (int i = 0; arr1[i]; i++)
+	{
+		if (arr2[i] >= 'A' && arr2[i] <= 'Z')
+		{
+			arr2[i] = tolower((unsigned int)arr2[i]);
+		}
+	}
+	//if(arr1 != NULL && arr2!=NULL)
+	int n = strcmp(arr1, arr2);
+	free(arr1);
+	free(arr2);
+	return n;
 }
 
 

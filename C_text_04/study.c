@@ -57,6 +57,7 @@ int main()
 	}
 	while (1)
 	{
+		timeshell();
 		menu();
 		int num;
 		scanf_s("%d", &num);
