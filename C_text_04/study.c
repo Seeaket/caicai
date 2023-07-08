@@ -36,7 +36,7 @@ void counter(struct data* p)
 }
 
 
-//this is a test
+//this is a test aaa
 int main()
 {
 	//位结构体的年月日输入，内存位的分配
