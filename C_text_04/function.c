@@ -7,7 +7,7 @@
 
 struct hhh* phead = NULL;
 count = 0;
-
+//bbb
 //延迟函数  头文件tiem.h
 void Delay(int time)//time*1000为秒数 
 {
